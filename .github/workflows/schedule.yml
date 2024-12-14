@@ -21,7 +21,7 @@ jobs:
       - name: Get latest commit hash
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          REPO: ${{ env.SRC_REPOSITORY }}
+          REPO: ${{ vars.SRC_REPOSITORY }}
           BRANCH: main
         run: |
           COMMIT_HASH=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
@@ -31,5 +31,5 @@ jobs:
       #   uses: peter-evans/repository-dispatch@v3
       #   with:
       #     token: ${{ steps.generate_token.outputs.token }}
-      #     repository: ${{ env.TARGET_REPOSITORY }}
-      #     event-type: ${{ env.TARGET_EVENT_TYPE }}
+      #     repository: ${{ vars.TARGET_REPOSITORY }}
+      #     event-type: ${{ vars.TARGET_EVENT_TYPE }}
