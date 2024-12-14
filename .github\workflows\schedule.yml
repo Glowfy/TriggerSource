@@ -1,0 +1,35 @@
+name: Source trigger pauling
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '*/5 * * * *'
+jobs:
+  remote-dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          path: main
+      - name: Get latest commit hash
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          REPO: ${{ env.SRC_REPOSITORY }}
+          BRANCH: main
+        run: |
+          COMMIT_HASH=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$REPO/commits/$BRANCH" | jq -r '.sha')
+          echo "Commit Hash: $COMMIT_HASH"
+      # - name: Repository Dispatch
+      #   uses: peter-evans/repository-dispatch@v3
+      #   with:
+      #     token: ${{ steps.generate_token.outputs.token }}
+      #     repository: ${{ env.TARGET_REPOSITORY }}
+      #     event-type: ${{ env.TARGET_EVENT_TYPE }}
