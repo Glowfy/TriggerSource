@@ -11,6 +11,7 @@ jobs:
     outputs:
       changes: ${{ steps.add-and-commit.outputs.committed }}
     steps:
+      - uses: actions/checkout@v4
       - name: Get latest commit hash
         env:
           REPO: ${{ vars.SRC_REPOSITORY }}
