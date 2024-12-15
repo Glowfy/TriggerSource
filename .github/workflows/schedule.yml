@@ -7,6 +7,8 @@ on:
   #   - cron: '*/5 * * * *'
 jobs:
   check:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     outputs:
       changes: ${{ steps.add-and-commit.outputs.committed }}
