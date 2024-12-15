@@ -27,6 +27,7 @@ jobs:
           SECURE_HASH=$(echo -n "$COMMIT_HASH" | sha256sum | awk '{print $1}')
           echo "$SECURE_HASH" > ./current_hash.txt
       - name: Add and commit if changed
+        id: add-and-commit
         uses: EndBug/add-and-commit@v9
         with:
           add: 'current_hash.txt'
